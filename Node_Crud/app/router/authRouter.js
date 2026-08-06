@@ -16,4 +16,5 @@ router.get("/profile", verifyToken, AuthController.profilePosts);
 router.post("/verify-otp", AuthController.verifyOtp);
 router.post("/reset-password-link", AuthController.resetPasswordLink);
 router.post("/reset-password/:id/:token", AuthController.resetPassword);
+
 module.exports = router;

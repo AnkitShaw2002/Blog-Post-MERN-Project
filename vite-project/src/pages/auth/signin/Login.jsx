@@ -10,14 +10,14 @@ import { useLoginForm } from "../../../../validator/loginValidator/loginForm.hoo
 
 import foodVideo from "../../../../src/assets/login-DingDong.mp4";
 
-import { useNavigate } from "react-router-dom"; 
-
-
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../../../store/authStore";
 
 export default function Login() {
   const { loginUser, loading, error } = useLogin();
-// Inside your component function:
-const navigate = useNavigate(); // 2. Initialize the hook
+  const login = useAuthStore((state) => state.login);
+  // Inside your component function:
+  const navigate = useNavigate(); // 2. Initialize the hook
   const {
     formData,
     handleChange,
@@ -51,12 +51,12 @@ const navigate = useNavigate(); // 2. Initialize the hook
 
         console.log(response);
 
-      if (response && response.status === true) {
-        setSuccessMsg(response?.message || "Logged in successfully!");
-        resetForm();
-
-        navigate("/product/product-list"); 
-      }
+        if (response && response.status === true) {
+          login(response.user, response.token);
+          setSuccessMsg(response?.message || "Logged in successfully!");
+          resetForm();
+          navigate("/product/product-list");
+        }
 
       } catch (err) {
         console.error("Login failed:", err);
@@ -67,6 +67,9 @@ const navigate = useNavigate(); // 2. Initialize the hook
     },
     [formData, loginUser, resetForm, setSuccessMsg, setInvalidInput, validation]
   );
+
+
+
 
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-between overflow-x-hidden bg-[#1f2430]">

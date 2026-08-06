@@ -69,9 +69,7 @@ export const useLogin = () => {
         credentials
       );
 
-      if (loginData.token) {
-        localStorage.setItem("token", loginData.token);
-      }
+
 
       if (loginData.status) {
         toast.success(loginData.message)
@@ -146,6 +144,53 @@ export const useVerifyOtp = () => {
     error
   };
 }
+
+
+export const useUpdatePassword = () => {
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const updatePassword = useCallback(async (updatePasswordData) => {
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const { data: updateData } = await axiosInstance.put(
+        EndPoints.auth.updatePassword,
+        updatePasswordData
+      );
+
+      if (updateData.status) {
+        toast.success(updateData.message);
+      } else {
+        toast.error(updateData.message);
+      }
+
+      return updateData;
+    } catch (error) {
+
+      const message = getErrorMessage(error);
+
+      setError(message);
+      toast.error(message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return {
+    updatePassword,
+    loading,
+    error
+  };
+};
+
+
+
+
 
 export const useForgetPassword = () => {
 

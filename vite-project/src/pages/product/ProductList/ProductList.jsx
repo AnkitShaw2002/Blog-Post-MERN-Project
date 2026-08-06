@@ -9,7 +9,10 @@ import { ProductListChild } from "../../../../component/ProductListChild";
 import Header from "../../../../component/layout/Header";
 import Footer from "../../../../component/layout/Footer";
 import { deletePostUser } from "../../../../validator/product.delete";
-import {getProfileDataUser} from "../../../../validator/userProfileGet/userProfileGet"
+import { getProfileDataUser } from "../../../../validator/userProfileGet/userProfileGet"
+import { SkeletonTheme } from "react-loading-skeleton";
+// import Skeleton from 'react-loading-skeleton'
+// import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function ProductList() {
 
@@ -20,11 +23,11 @@ export default function ProductList() {
   const { fetchPosts, loading, error } = usePostList();
   const initialFetch = useRef(true);
 
-  const { profileDetails, 
+  const { profileDetails,
     // loading, error 
   } = useUserProfile();
 
-  
+
 
   const {
     // posts,
@@ -36,9 +39,9 @@ export default function ProductList() {
     // loading, error 
   } = useDeletePost();
 
- 
 
-const {userProfile, setUserProfile,fetchUserProfile}=getProfileDataUser();
+
+  const { userProfile, setUserProfile, fetchUserProfile } = getProfileDataUser();
 
 
   // const [userProfile, setUserProfile] = useState({
@@ -149,6 +152,10 @@ const {userProfile, setUserProfile,fetchUserProfile}=getProfileDataUser();
     navigate("/product/product-add");
   };
 
+  const handleUpdatePassword = () => {
+    navigate('/product/update-password');
+  };
+
 
 
   // if (loading && posts.length === 0) {
@@ -165,17 +172,24 @@ const {userProfile, setUserProfile,fetchUserProfile}=getProfileDataUser();
       <div className="relative z-30 w-full">
         <Header />
       </div>
-      <ProductListChild
-        posts={posts}
-        filteredItems={filteredItems}
-        setFilteredItems={setFilteredItems}
-        userProfile={userProfile}
-        onDeletePost={handleDelete}
-        onEditPost={handleEditClick}
-        onViewPost={handleViewClick}
-        onCreateClick={handleCreateRedirect}
 
-      />
+      <SkeletonTheme baseColor="#948484" highlightColor="#5ec02a">
+
+        <ProductListChild
+          posts={posts}
+          loading={loading}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          userProfile={userProfile}
+          onDeletePost={handleDelete}
+          onEditPost={handleEditClick}
+          onViewPost={handleViewClick}
+          onCreateClick={handleCreateRedirect}
+          handleUpdatePassword={handleUpdatePassword}
+
+        />
+      </SkeletonTheme>
+
       {/* Persistent Footer Component */}
       <div className="relative z-30 w-full">
         <Footer />

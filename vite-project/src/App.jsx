@@ -1,4 +1,4 @@
-import { Component, useState } from 'react'
+import { Component, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -17,10 +17,12 @@ import ProductUpdate from './pages/product/ProductUpdate/ProductUpdate'
 import ProductView from './pages/product/ProductView/ProductView'
 import ForgetPassword from './pages/auth/ForgetPassword/ForgetPassword'
 import ResetPassword from './pages/auth/ResetPassword/ResetPassword'
+import useAuthStore from '../store/authStore'
+import UpdatePassword from './pages/product/UpdatePassword/UpdatePassword'
+
 
 
 function App() {
-
   const publicRouting = [{
     component: <Login />,
     path: "/auth/login",
@@ -68,6 +70,10 @@ function App() {
     path: "/auth/profile-details",
   },
   {
+    component: <UpdatePassword />,
+    path: "/product/update-password",
+  },
+  {
     component: <ProductUpdate />,
     path: "/product/product-update/:id",
   },
@@ -77,12 +83,9 @@ function App() {
   },
   ]
 
-
-
-
   return (
     <>
-    
+
       <Router>
         <Routes>
           {publicRouting.map((item) => (
